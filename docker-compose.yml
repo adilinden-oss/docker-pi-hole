@@ -8,7 +8,7 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "80:80/tcp"
-      - "443:443/tcp"
+      #- "443:443/tcp"
     environment:
       - TZ=${TZ:-America/Winnipeg}
       - FTLCONF_webserver_api_password=${PIHOLE_PWD}
@@ -29,11 +29,13 @@ services:
       - pihole
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
+      - TS_SERVE_CONFIG=/config/serve.json
       - TS_AUTHKEY=${TS_AUTHKEY}
       - TS_EXTRA_ARGS=${TS_EXTRA_ARGS}
     volumes:
       - /dev/net/tun:/dev/net/tun
       - ${PWD}/volumes/ts-pihole/lib:/var/lib
+      - ${PWD}/config/ts-pihole:/config
     cap_add:
       - NET_ADMIN
     network_mode: service:pihole
