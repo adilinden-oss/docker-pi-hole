@@ -14,6 +14,7 @@ services:
       - FTLCONF_webserver_port=80
       - FTLCONF_dns_listeningMode=all
       - FTLCONF_misc_etc_dnsmasq_d=true
+      - FTLCONF_dns_upstreams=${PIHOLE_DNS}
     volumes:
       # For persisting Pi-hole's databases and common configuration file
       - ${PWD}/volumes/pihole/etc:/etc/pihole
