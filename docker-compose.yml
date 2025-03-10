@@ -19,10 +19,12 @@ services:
       # For persisting Pi-hole's databases and common configuration file
       - ${PWD}/volumes/pihole/etc:/etc/pihole
       - ${PWD}/volumes/pihole/dnsmasq:/etc/dnsmasq.d
+      - ${PWD}/volumes/pihole/log:/var/log/pihole
     cap_add:
       - NET_ADMIN
       - SYS_TIME
       - SYS_NICE
+      - CAP_CHOWN
     restart: unless-stopped
 
   ts-pihole:
