@@ -1,0 +1,40 @@
+services:
+
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: ${PIHOLE_HOSTNAME}
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    environment:
+      - TZ=${TZ:-America/Winnipeg}
+      - FTLCONF_webserver_api_password=${PIHOLE_PWD}
+      - FTLCONF_dns_listeningMode=all
+    volumes:
+      # For persisting Pi-hole's databases and common configuration file
+      - ${PWD}/volumes/pihole/etc:/etc/pihole
+    cap_add:
+      - NET_ADMIN
+      - SYS_TIME
+      - SYS_NICE
+    restart: unless-stopped
+
+  ts-pihole:
+    image: tailscale/tailscale
+    container_name: ts-pihole
+    depends_on:
+      - pihole
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_EXTRA_ARGS=${TS_EXTRA_ARGS}
+    volumes:
+      - /dev/net/tun:/dev/net/tun
+      - ${PWD}/volumes/ts-pihole/lib:/var/lib
+    cap_add:
+      - NET_ADMIN
+    network_mode: service:pihole
+    restart: unless-stopped
