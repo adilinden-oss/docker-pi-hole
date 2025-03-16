@@ -60,15 +60,13 @@ Install Docker.
     systemctl start docker
     systemctl status docker
 
-Configure `docker` log rotation by adding this to `/etc/docker/daemon.json`
+Configure `/etc/docker/daemon.json` to use the system `journald` logging mechanism.
 
-    {
-      "log-driver": "local",
-      "log-opts": {
-        "max-size": "10m",
-        "max-file": "3"
-      }
-    }
+```
+{
+  "log-driver": "journald"
+}
+```
 
 ## Pi-Hole
 
