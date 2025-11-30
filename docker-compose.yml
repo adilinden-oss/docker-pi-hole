@@ -1,7 +1,7 @@
 services:
 
   pihole:
-    image: pihole/pihole:2025.03.0
+    image: pihole/pihole:2025.11.1
     container_name: pihole
     hostname: ${PIHOLE_HOSTNAME}
     ports:
@@ -28,6 +28,7 @@ services:
     restart: unless-stopped
 
   ts-pihole:
+    profiles: ["disabled"] # temporary disable
     image: tailscale/tailscale
     container_name: ts-pihole
     depends_on:
